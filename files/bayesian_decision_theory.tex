@@ -1,0 +1,144 @@
+\section{Bayesian Decision Theory}
+\skriptsubsection{Basics}{20}
+\begin{minipage}{9.5cm}
+  $\{\alpha_1, \ldots \alpha_a\}$ possible actions.
+  $\{\omega_1, \ldots \omega_c\}$ 'states of nature' (categories).
+  $\mathbf{x}$ is the measurement:
+  \begin{center}
+    \hilight{$P(\omega_i|x) = \frac{p(x|\omega_i) P(\omega_i)}{p(x)}$} \\
+    $= \underbrace{\frac{p(x|\omega_i) P(\omega_i)}{\int\limits_{-\infty}^{\infty}p(x|\omega_j) P(\omega_j) dx}}_{\text{Continous features}}
+     \text{ or } 
+     \underbrace{\frac{p(x|\omega_i) P(\omega_i)}{\sum\limits_{j=1}^{c}p(x|\omega_j) P(\omega_j)}}_{\text{Discrete features \formelbuch{51}}}$
+    \hilight{$ Posterior = \frac{Likelihood \; \times \; Prior}{Evidence}$}
+  \end{center}
+  
+  $$P(error|x) = \int_{-\infty}^{\infty} P(error, x) dx = \int_{-\infty}^{\infty} P(error|x) p(x) dx$$
+  $$P(error|x) = \min\Big(P(\omega_1|x), P(\omega_2|x)\Big)$$
+  
+  
+\skriptsubsection{Continuous Features}{24}
+The overall risk $R$ must be minimized:
+$$R(\alpha_i|\mathbf{x}) = \sum\limits_{j=1}^c \lambda(\alpha_i|\omega_j) P(\omega_j|\mathbf{x})$$
+Action: $\alpha(\bm x)$, feature space: $\mathbf{R}^d$; loss or cost function when taking action $i$ 
+when the state of nature is $j$: $\lambda(\alpha_i|\omega_j)$
+  
+\end{minipage} \vspace{1cm}
+\begin{minipage}{9cm}
+  \includegraphics[width=8.5cm]{./images/posterior-prob.jpg}\\
+  \includegraphics[width=8.5cm]{./images/class-cond-prob.jpg}
+\end{minipage}
+
+\skriptsubsection{Two-Category Classification}{25}
+Decide $\omega_1$ when
+$$\frac{p(\mathbf{x}|\omega_1)}{p(\mathbf{x}|\omega_2)} > \underbrace{
+\frac{\lambda_{12} - \lambda_{22}}{\lambda_{21} - \lambda_{11}} \frac{P(\omega_2)}{P(\omega_1)}}_{\text{constant}}$$
+where $\lambda_{12}$, $\lambda_{21}$ are the costs for a wrong decision and 
+$\lambda_{11}$, $\lambda_{22}$ for the correct decision (which are usually $0$).
+
+\skriptsubsection{Classifiers}{29}
+\subsubsection{Multicategory Case}
+Discriminant functions: $g_i(\mathbf{x}) > g_j(\mathbf{x})$ for all $j \neq i$
+$$g_i(\mathbf{x}) = P(\omega_i|x) = 
+\frac{p(x|\omega_i) P(\omega_i)}{\sum\limits_{j=1}^{c}p(x|\omega_j) P(\omega_j)}$$
+
+\subsubsection{Two-Category Case}
+Decide $\omega_1$ when $g(\mathbf{x}) > 0$:
+$$g(\mathbf{x}) \equiv g_1(\mathbf{x}) - g_2(\mathbf{x})\hspace{5mm} \text{ or } \hspace{5mm}  
+g(\mathbf{x}) = \ln \frac{p(\mathbf{x}|\omega_1)}{p(\mathbf{x}|\omega_2)} + \ln \frac{P(\omega_1)}{P(\omega_2)}$$
+
+
+\skriptsubsection{Normal Density}{31}
+  \skriptsubsubsection{Univariate Density}{32}
+  \begin{minipage}{12cm}
+  Viele kleine, unabhängige Zufallsvariable sammeln sich zu einer
+  normalverteilten Zufallsvariable.\\
+   $\varphi(x)=p(x)=\frac{1}{\sqrt{2
+  \pi}\sigma}\cdot e^{-\frac{(x-\mu)^2}{2\sigma^2}} = N(\mu ; \sigma^2) \qquad \mu=E(x)=\int\limits_{-\infty}^{\infty}{x p(x) dx}$\\ 
+  $F(x)=\frac{1}{\sqrt{2
+  \pi}\sigma}\cdot \int\limits^{x}_{-\infty}{e^{-\frac{(\tilde{x} -\mu)^2}{2\sigma^2}}} \qquad \sigma^2=E\left[(x-\mu)^2\right]=\int\limits_{-\infty}^{\infty}{(x-\mu)^2 p(x) dx}$ \\
+  % = N(\mu ; \sigma^2),\tilde{x}} $
+  \textbf{Standardisierung}\\
+  Erwartungswert: $E(X)=\mu$ \hspace{4mm}(=0 bei Standardnormalver.)\\ 
+  Varianz \hspace{11.5mm}: $var(X)=\sigma^2$ (=1 bei Standardnormalver.)\\ \\
+  $x=\dfrac{X-\mu}{\sigma}$ \hspace{5mm} $x$ aus Tabelle
+  \end{minipage}
+  \begin{minipage}{7cm}
+  \includegraphics[width=7cm]{../WrStat/bilder/normalverteilung.png}
+  Dichtefunktion (oben) und Verteilungsfunktion (unten) der Normalverteilung. 
+  \end{minipage} \\ \\ 
+ $ 68\% $ der Werte liegen im Intervall $[ \mu - \sigma, \mu + \sigma]$, $95\% $ in $[ \mu - 2\sigma, \mu + 2\sigma]$, $99.7\% $ in $[ \mu - 3\sigma, \mu + 3\sigma]$
+
+
+
+\skriptsubsubsection{Multivariate Density}{33}
+  $N(\boldsymbol{\mu}, \boldsymbol{\Sigma}) \backsim p(\mathbf{x}) = \frac{1}{(2\pi)^{d/2} | \boldsymbol{\Sigma}|^{1/2}} \exp \bigg[-\frac{1}{2} (\mathbf{x} - \boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x}-\boldsymbol{\mu})\bigg]$
+  \\
+  \subsubsubsection{The whitening transform} leads to a proportional matrix of the identity matrix $\mathbf{I}$:
+  $\mathbf{A}_w = \boldsymbol{\Phi} \boldsymbol{\Lambda}^{-1/2}$ 
+  where $\mathbf{\Phi}$ is matrix whose columns are the orthonormal eigenvectors of 
+  $\mathbf{\Sigma}$ and $\mathbf{\Lambda}^{1/2}=\begin{bmatrix}
+  \sqrt{\lambda_1}& 0 & \ldots \\
+  0&\sqrt{\lambda_2}&\ldots\\
+  \ldots
+  \end{bmatrix}$ its eigenvalues.
+  
+  \subsubsubsection{Mahalanobis Distance} from $\mathbf{x}$ to $\boldsymbol{\mu}$: $r^2 = (\mathbf{x}-\boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x}-\boldsymbol{\mu})$ 
+  is with the co-/ variance ``normalized'' distance from the given point to the mean.
+  
+  
+  \subsubsection{Covariance}  
+  Covariance: $\sigma_{xy} = c_{xy}= \operatorname{Cov}(X,Y) = E((x-E(X))(y-E(Y))) = E(XY^*)-E(X)E(Y)= \underbrace{0}_{\text{falls X,Y unabhängig}}= \underbrace{r_{xy}}_{\text{falls X,Y mittelwertsfrei}}$
+  \\
+  Covariance matrix: $\operatorname{Cov}(X) = \mathbf{\Sigma} = 
+  \bigl(\operatorname{Cov}(X_i, X_j)\bigr)_{i,j=1,\ldots,n} = \begin{pmatrix} 
+\operatorname{Cov}(X_1,X_1) & \cdots & \operatorname{Cov}(X_1,X_n) \\
+\vdots & \ddots & \vdots \\
+\operatorname{Cov}(X_n,X_1) & \cdots& \operatorname{Cov}(X_n,X_n)\end{pmatrix}$\\
+
+
+  \skriptsubsubsection{Discriminant Functions for the Gaussian Density}{36}
+  \label{sec:bayes_discriminant_function}
+  \subsubsubsection{Case 1: $\Sigma_i = \sigma^2 I$}\\
+  Same variance in all independent features.
+  The linear discriminant function turns to: 
+  $$g_i(\mathbf{x}) = \mathbf{w}_i^T \mathbf{x} + w_{i0} \text{ with } 
+  \mathbf{w}_i = \frac{1}{\sigma^2}\boldsymbol{\mu}_i \text{ and }
+  w_{i0} = -\frac{1}{2\sigma^2} \boldsymbol{\mu}_i^T \boldsymbol{\mu}_i + \ln(P(\omega_i))$$
+  
+  The decision surface is a plane: $\mathbf{w}^T(\mathbf{x}-\mathbf{x}_0) = 0$ with $\mathbf{w} = \boldsymbol{\mu}_i - \boldsymbol{\mu}_j$ and 
+  $\mathbf{x}_0 = \frac{1}{2}(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j) - \frac{\sigma^2}{||\boldsymbol{\mu}_i-\boldsymbol{\mu}_j||^2} \ln\left(\frac{P(\omega_i)}{P(\omega_j)}\right) (\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)$
+  
+  
+  \subsubsubsection{Case 2: $\Sigma_i = \Sigma$}\\
+  Some covariance matrix for all classes.
+  The linear discriminant function turns to: 
+  $$g_i(\mathbf{x}) = \mathbf{w}_i^T \mathbf{x} + w_{i0} \text{ with } 
+  \mathbf{w}_i = \boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i \text{ and }
+  w_{i0} = -\frac{1}{2} \boldsymbol{\mu}_i^T \boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i + \ln(P(\omega_i))$$
+  
+  The decision surface: $\mathbf{w}^T(\mathbf{x}-\mathbf{x}_0) = 0$ with $\mathbf{w} = \boldsymbol{\Sigma}^{-1} (\boldsymbol{\mu}_i - \boldsymbol{\mu}_j)$ and 
+  $\mathbf{x}_0 = \frac{1}{2}(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j) - \frac{\sigma^2}{(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)^T \boldsymbol{\Sigma}^{-1} (\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)} \ln\left(\frac{P(\omega_i)}{P(\omega_j)}\right) (\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)$
+  
+  
+  \subsubsubsection{Case 3: $\Sigma_i = $ arbitrary}\\
+  General case.
+  The discriminant function is now quadratic: 
+  $$g_i(\mathbf{x}) = \mathbf{x}^T \mathbf{W}_i^T \mathbf{x} + \mathbf{w}_i^T \mathbf{x} +w_{i0} \text{ with } 
+  \mathbf{W}_i = -\frac{1}{2} \boldsymbol{\Sigma}^{-1} \text{ and }
+  \mathbf{w}_i = \boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i \text{ and }
+  w_{i0} = -\frac{1}{2} \boldsymbol{\mu}_i^T\boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i - \frac{1}{2}\ln(|\boldsymbol{\Sigma}_i|) + \ln(P(\omega_i))$$
+  
+  The decision surface cannot be described easily anymore as it may contain holes and nonlinear constructions.
+  
+  Example: \formelbuch{44}
+  
+
+\skriptsubsection{Independent Binary Features}{52}
+  Every component $x_i$ of vector $\mathbf{x}$ are either 0 or 1. The class-conditional probability is:\\
+  $$P(\mathbf{x}|\omega_1)=\prod\limits_{i=1}^d p_i^{x_i}(1-p_i)^{1-x_i} \qquad ( p_i^{x_i}(1-p_i)^{1-x_i} \Rightarrow\text{ either }p_i\text{ or }1-p_i)$$
+  
+  Discriminant function: $g(\bm x) = \sum\limits_{i=1}^d w_i x_i + w_0$ with 
+  $w_i = \ln \frac{p_i(1-q_i)}{q_i(1-p_i)}$ and 
+  $w_0 = \sum\limits_{i=1}^d \ln \frac{1-p_i}{1-q_i} + \ln \frac{P(\omega_1)}{P(\omega_2)}$
+  
+  Example: \formelbuch{53}

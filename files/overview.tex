@@ -1,0 +1,102 @@
+\newpage
+\begin{landscape}
+\section{Overview over Different Methods}
+\begin{tabular}{| p{3cm} |  p{3.5cm} | p{5cm} | p{4cm} | p{8cm} |}
+\hline
+Name& 	Precondition & Idea & Design Parameter & Dis-/Advantages\\
+\hline
+\textbf{Bayes Decision Theory} &
+	All  probability distributions with parameters are known &
+	Results into the optimal decision &
+	- &
+	\begin{beschreibListe}
+	\item[+] Optimal
+	\item[-] All $P(\bm x | \omega_i)$ have to be known
+	\end{beschreibListe}	\\
+\hline
+\textbf{Maximum-Likelihood} &
+	All probability distributions without parameters, some trainings pattern &
+	Estimate the distribution parameter so that $P(\mathcal D|\theta)$ is maximized&
+	Model $p(\bm x | \theta)$ &
+	\begin{beschreibListe}
+	\item[+] Simple
+	\item[-] Check for local maxim or worse minimum needed
+	\item[-] No possibility to add prior knowledge
+	\end{beschreibListe}\\
+\hline
+\textbf{Bayes Parameter Estimation} &
+	All probability distributions without parameter, some training samples &
+	Estimate the distribution of parameters with own probability density.   &
+	\begin{beschreibListe}
+	\item[-] Model of $p(\bm x|\bm \theta)$
+	\item[-] Prior density $P(\bm \theta)$ form and parameter 
+	\end{beschreibListe} &
+	\begin{beschreibListe}
+	\item[-] More complicated to calculate and understand
+	\item[+] Better results with prior knowledge for $\bm \theta$
+	\end{beschreibListe}\\
+\hline
+\textbf{Hidden Markov Model} &
+	Sequence of training samples, known model of hidden states (without parameter) &
+	Be able to model time dependencies. &
+	Topology of hidden states &
+	
+	\begin{beschreibListe}
+	\item[+] Be able to model time dependencies
+	\end{beschreibListe} \\
+\hline
+\textbf{Parzen Window} &
+	Enough training data &
+	Estimate $p(\bm x | \omega_i)$ by convoluting each training samples $\bm X_t$ 
+	with a given window $\varphi $ $\Rightarrow p(\bm x | \omega_i) \approx \sum \bm X_t \ast \varphi $ &
+	Window function, \textbf{width of the window function} $V_n / h_n$ &
+	
+	\begin{beschreibListe}
+	\item[-] Needs a lot of calculation to evaluate test pattern
+	\item[+] No knowledge about the distribution needed
+	\item[+] Easy to learn (PNN)
+	\item[+] Convergent to $p(x|\omega)$
+	\item[+] Easy to parallelize
+	\end{beschreibListe}   \\
+\hline
+\textbf{k-Nearest Neighbor} &
+	Enough training data &
+	Estimate $P(\omega_i|\bm x)$ directly, ``choose the class of which the most pattern are around me'' &
+	\textbf{Number of samples } $(k_n)$, Metric &
+	\begin{beschreibListe}
+	\item[+] Needs less calculation to evaluate test patten than Parzen Window
+	\item[+] Easy to understand
+	\item[-] Metric relevant
+	\item[-] Does not converge to Bayes (worst case factor 2 away)
+	\end{beschreibListe}\\
+\hline
+\textbf{Linear Discriminant Functions} &
+	Training samples (the more the better), data should be (almost) linear separable &
+	Search a separable hyperplane (defined with a weight vector $\bm a$), no estimation of $p(\bm x |\omega) / p(\omega | \bm x)$ &
+	Training algorithm, step size $(\eta)$, margin $b$, possible feature mapping into non-linear space $(x, x^2, yx, \ldots)$ &
+	
+	\begin{beschreibListe}
+	\item[+] Only training is complex 
+	\item[+] Good generalization because of linear
+	\item[-] Long training time
+	\item[-] Works only if the data are more or less linear separable
+	\end{beschreibListe} \\
+\hline
+\textbf{Multilayer Neural Network} & 
+	Many, many training samples &
+	The nonlinear feature mapping should be self learning, with a three layer network all distribution can be built theoretically. &
+	Network topology (\# layers, \# hidden nodes, special stuff (feedback, etc)), activation function &
+	
+	\begin{beschreibListe}
+	\item[+] No prior knowledge are needed
+	\item[+] Easy to add constraints
+	\item[-] Much training data needed
+	\item[-] Sometimes too many degrees of freedom
+	\item[-] Long training time
+	\end{beschreibListe}\\
+\hline
+
+	
+\end{tabular}
+
+\end{landscape}
