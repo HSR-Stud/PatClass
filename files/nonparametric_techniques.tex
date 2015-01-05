@@ -11,9 +11,11 @@
   samples (of this class). Therefore, $k/n$ is the relative frequency.
   
   Two approaches solve these problems:\\
-  \includegraphics[width=7cm]{./images/non-parametric_methods_1.png}
-  \includegraphics[width=7cm]{./images/non-parametric_methods_2.jpg}
-  
+  \begin{center}
+    \includegraphics[width=7cm]{./images/non-parametric_methods_1.png}\hspace{0.5cm}
+    \includegraphics[width=7cm]{./images/non-parametric_methods_2.jpg}
+  \end{center}
+    
   \skriptsubsection{Parzen Windows}{164}
   	The goal of the Parzen Windows method is to estimate a class-conditional probabilty density function $p(\bm x | \omega)$. 
     For this a window function with a defined region $\mathcal{R}_n$ is convoluted with each training sample give class. 
@@ -22,13 +24,13 @@
     (Gauss, triangle (Dreieck), \ldots). 
     Often a window with infinite length such as the Gauss window is used, because then the probability will never be zero and a better comparison can be made.\\
     \begin{minipage}{13cm}
-    	$$\varphi_{hypercube}(\bm{u}) = \begin{cases}
+    	$$\varphi_{\mathrm{hypercube}}(\bm{u}) = \begin{cases}
 	    1 &|u_j| \leq 1/2 \quad  j=1,\ldots,d\\
 	    0 & \text{otherwise}
 	    \end{cases}$$
 	    Therefore, the probability can be estimated with
 	    $$p(\bm{x}|\omega_j) = \frac1{n_j} \sum_{i=1}^{n_j} \frac{1}{V_{n_j}} \varphi \left(\frac{\bm{x}-\bm{x}_i}{h_{n_j}} \right) \quad 
-	    \text{with the conditions } \varphi(\bm{x}) \geq 0 \text{ and } \int \varphi(\bm{u}) du = 1 $$
+	    \text{with } \varphi(\bm{x}) \geq 0 \text{ and } \int \varphi(\bm{u}) du = 1 $$
 	    $n_j$ is the number of training sample given class $j$. \\
     \end{minipage}
     \begin{minipage}{5cm}
@@ -38,6 +40,12 @@
     Choosing $h_n$ is important! If $h_n$ (which leads to $V_n$) is too large, the resolution of the
     estimate is too small; if $h_n$ is too small, the statistical variability is too high.
     
+    If we define $\delta_n(\bfx)$ to be $\delta_n(\bfx) = \frac{1}{V_n} \phi\left(\frac{\bfx}{h_n}\right)$,
+    we can rewrite $p_n(\bfx)$ as the average of a number of dirac functions 
+    \begin{equation*}
+      p_n(\bfx) = \frac{1}{n}\sum\limits_{i=1}^{n}\delta_n(\bfx-\bfx_i)
+    \end{equation*}
+   
   
   \skriptsubsubsection{Probabilistic Neural Networks}{172}
   A PNN is a Parzen window with a Gaussian window function where all data has to be normalized.\\
@@ -98,6 +106,7 @@
   \skriptsubsection{Nearest-Neighbor Rule}{177}
   	The nearest-neighbor is a simplification of $k_n$-nearest-neighbors, in particular $k=1$. 
   	The class the given test sample will be the same class as the ``next'' trainings sample.
+  	This can be visualized by a \emph{Voroni tesselation}\formelbuch{178}.
   	
   	\skriptsubsubsection{Convergence of the Nearest Neighbor}{181}
     The error rate of the nearest-neighbor rule is not optimal, it is usually worse than the Bayes 
@@ -136,13 +145,16 @@
   \skriptsubsection{Metrics}{187}
     A metric gives a generalized scalar distance between different arguments (vectors, functions, etc.). 
     The metrics has  a big influence in the Nearest-Neighbor. \textbf{Scaling!!!}
+    Usually all lengths are measured in terms of their standard deviation.
   
+  \begin{multicols}{2}
+
     
     \subsubsection{Properties}
-    \begin{tabular}{llll}
-      Nonnegativity: &$D(\bm a, \bm b) \geq 0$ &
+    \begin{tabular}{ll}
+      Nonnegativity: &$D(\bm a, \bm b) \geq 0$  \\
       Reflexivity:   &$D(\bm a, \bm b) = 0 \text{ if } \bm a = \bm b$\\
-      Symmetry:      &$D(\bm a, \bm b)=D(\bm b, \bm a)$ &
+      Symmetry:      &$D(\bm a, \bm b)=D(\bm b, \bm a)$  \\
       Triangle inequality: & $D(\bm a, \bm b) + D(\bm b, \bm c) \geq D(\bm a, \bm c)$
     \end{tabular}
     
@@ -157,9 +169,19 @@
       Shortest path between $\bm a$ and $\bm b$ following the coordinate axis.
     
     \subsubsection{Minkowski Metric / Lk-Norm}
+	A general class of metrix for d-dimensional patterns is the $L_k$ norm
+	$L_k(\mathbf{a},\mathbf{b}) = \left(\sum\limits_{i=1}^{d} \left| a_i-b_i \right|^k \right)^{1/k}$
+    
     \subsubsection{Tanimoto Metric}
+	The Tanimoto metric is used in taxonomy to define the distance between two sets.
+	$D_{\mathrm{Tanimoto}}(\mathcal{S}_1,\mathcal{S}_2) = \frac{n_1 + n_2 - 2 n_{12}}{n_1 + n_2 - n_{12}}$
+	where $n_1$ and $n_2$ are the number of elements in the sets $\mathcal{S}_1$ and $\mathcal{S}_2$ 
+	and $n_{12}$ is the number that is in both sets.
     
     \subsubsection{Selection of a Metric}
       Hard to choose, usually selection is dictated by computational concerns not to prior knowledge
       about the distributions.
       
+    \skriptsubsubsection{Tangent distance}{188}
+      
+  \end{multicols}
