@@ -3,19 +3,19 @@
   \skriptsubsection{Maximum-Likelihood Estimation (ML)}{85}
   Maximum-Likelihood estimation tries to find an optimum solution if a parameter vector
   $\boldsymbol{\theta}$ is unknown.
-  The likelihood of $\boldsymbol{\theta}$ with respect to the set of samples is defined as 
+  The likelihood of $\boldsymbol{\theta}$ with respect to the set of samples $\mathcal{D}$ is defined as 
   $p(\mathcal{D} | \boldsymbol{\theta}) = \prod_{k=1}^{n} p(\mathbf{x}_k | \boldsymbol{\theta})$ 
   (samples are i.i.d. - independent \& identically distributed).
   
   \begin{minipage}{12cm}
-	  Recipe with log-likelihood:
-	  \begin{aufzaehlung}
-	    \item Log-likelihood: $l(\boldsymbol{\theta}) = \ln (p(\mathcal{D} | \boldsymbol{\theta}))=\sum\limits_{k=1}^n \ln(p(\mathbf{x}_k | \boldsymbol{\theta}))$ \quad $\left( \frac{d}{dx} \ln(x) = \frac1x \right)$
-	    \item Derivative: $\nabla_{\boldsymbol{\theta}} l = 
-	      \sum\limits_{k=1}^n \nabla_{\boldsymbol{\theta}}\ln(p(\mathbf{x}_k | \boldsymbol{\theta}))$
-	    \item Setting derivative to zero: $\nabla_{\boldsymbol{\theta}} l = 0$ and find solution 
-	      $\boldsymbol{\hat{\theta}}=arg~ \underset{\bm{\theta}}{max}~ l(\bm{\theta})$
-	  \end{aufzaehlung}
+	  Recipe with log-likelihood: \\
+	  \begin{tabular}{lll}
+	  1. & Log-likelihood: & $l(\boldsymbol{\theta}) \equiv \ln (p(\mathcal{D} | \boldsymbol{\theta}))=\sum\limits_{k=1}^n \ln(p(\mathbf{x}_k | \boldsymbol{\theta}))$ \quad $\left( \frac{d}{dx} \ln(x) = \frac1x \right)$ \\
+	  2. & Gradient: &  $\nabla_{\boldsymbol{\theta}} l = 
+	  	      \sum\limits_{k=1}^n \nabla_{\boldsymbol{\theta}}\ln(p(\mathbf{x}_k | \boldsymbol{\theta}))$ \\
+	  3. & $\nabla_{\boldsymbol{\theta}} l = 0$: & find solution 
+	  	      $\boldsymbol{\hat{\theta}}=\arg\max\limits_{\boldsymbol{\theta}} l(\bm{\theta})$ \\
+	  \end{tabular}
   \end{minipage}
   \begin{minipage}{8cm}
   	\includegraphics[width=7cm]{./images/MaxLikely.png}
@@ -36,6 +36,7 @@
   
   
   \skriptsubsection{Bayesian Estimation}{90}
+  In Bayesian learning, we consider $\boldsymbol{\theta}$ to be a random variable and estimate the distribution of this variable.
   The main difference to the maximum-likelihood method is that we give to our guess for the $\boldsymbol{\hat{\mu}}$ and $\boldsymbol{\hat{\Sigma}}$ an 
    uncertainty\slash{}variance\slash{}distribution. Additionally the Bayes method can use prior knowledge. If there is such a prior knowledge Bayesian is possible 
    to reach the same result as ML with less training data. A disadvantage is, that it needs more calculating power, or better result with same training data, if the class-conditional density is known.
@@ -115,7 +116,7 @@
   \skriptsubsection{Differences between Bayes and Maximum-Likelihood}{100}
   \begin{tabular}{ll}
     \parbox{9cm}{
-      \textbf{Maximum-Likelihood}\\
+      \textbf{Maximum-Likelihood}
       \begin{itemize}
         \item Easier to understand and interpret
         \item Easier to calculate (computational complexity)
@@ -123,7 +124,7 @@
       \end{itemize}
     }
     & \parbox{9cm}{
-      \textbf{Bayesian Estimation}\\
+      \textbf{Bayesian Estimation}
       \begin{itemize}
         \item Requires prior knowledge (or assumptions)
         \item Can reach better results with less training data
@@ -134,7 +135,7 @@
   
   Some sources of classification errors do both have in common:
   \begin{itemize}
-    \item \textbf{Bayes or indistinguishability error}: No elimination possible due to overlapping
+    \item \textbf{Bayes or indistinguishably error}: No elimination possible due to overlapping
     densities $p(\bm{x}|\omega_i)$
   	\item \textbf{Model error}: Having an incorrect model leads to wrong results.
   	\item \textbf{Estimation error}: Having a limited number of samples (increasing can help reducing)
@@ -150,21 +151,27 @@
   Notion for computational complexity: Said: ``$f(x)$ is of the order of $h(x)$'' and denote this as
   $f(x) = O(h(x))$ (``Big Oh''). E.g. for $f(a_0+a_1x+a_2x^2)$ we have: $f(x) = O(x^2)$.
   This Big Oh can be calculated for time or space and is independent of the actual operation but
-  only on its scaling.
+  only on its scaling. \\
+  
+  Finding the sample mean $\hat{\boldsymbol{\mu}}$ for $d$ dimensions and $n$ samples is $O(nd)$.
+  The complexity of the covariance matrix $\hat{\boldsymbol{\Sigma}}$ is $O(d^2n)$. 
+  The inverse and the determinant each have a complexity of $O(d^3)$.
   
   \subsection{Component Analysis and Discriminants}
   
   \begin{minipage}{13cm}
   
-    	\skriptsubsubsection{Principal Component Analysis (PCA)}{115}
+  \skriptsubsubsection{Principal Component Analysis (PCA)}{115}
   Ideal for compression but not for pattern recognition.
   Although PCA finds components that are useful for representing data, there is no reason to 
   assume that these components must be useful for discriminating between data in different classes.\\
-  \begin{center}
-  $\bm{x}=\bm{m}+a \bm{e} \Rightarrow a_k=\bm{e}^T(\bm{x_k-m})$\\
-  $S=\sum\limits_{k=1}^{n}{\bm{(x_k-m)(x_k-m)^T}}$\\
-  $\bm{S e}=\lambda \bm{e} \Rightarrow \bm{x}=\bm{m}+\sum\limits_{i=1}^{d'}{a_i \bm{e}}$
-  \end{center}
+  \begin{align*}
+	&  && \bm{x}=\bm{m}+a \bm{e} \quad \Rightarrow \quad a_k=\bm{e}^T(\bm{x_k-m}) \\
+    &\text{Scatter matrix} \quad && \bm{S} = \sum\limits_{k=1}^{n}{\bm{(x_k}-\bm{m})(\bm{x_k}-\bm{m})^T} \\
+    &\text{Eigenvector } \bm{e} \quad && \bm{S e}=\lambda \bm{e} \\
+    &\text{Results in} && \bm{x}=\bm{m}+\sum\limits_{i=1}^{d'}{a_i \bm{e}}
+  \end{align*}
+
   \end{minipage}
   \begin{minipage}{5cm}
   	\includegraphics[width=5cm]{./images/principalComp.png}
