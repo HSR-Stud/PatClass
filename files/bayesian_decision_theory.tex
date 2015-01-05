@@ -1,26 +1,41 @@
 \section{Bayesian Decision Theory}
 \skriptsubsection{Basics}{20}
 \begin{minipage}{9.5cm}
-  $\{\alpha_1, \ldots \alpha_a\}$ possible actions.
-  $\{\omega_1, \ldots \omega_c\}$ 'states of nature' (categories).
-  $\mathbf{x}$ is the measurement:
+  Let $\omega$ denote the state of nature with possible values $\{\omega_1, \ldots \omega_c\}$.
+  $\omega$ is a variable which is described probabilistically.
+  The \emph{prior probabilities} are $P(\omega_1) \ldots P(\omega_c)$.
+  Possible actions are $\{\alpha_1, \ldots \alpha_a\}$
+
+  For a given measurement $\mathbf{x}$, the \emph{posterior probability} is:
   \begin{center}
     \hilight{$P(\omega_i|x) = \frac{p(x|\omega_i) P(\omega_i)}{p(x)}$} \\
     $= \underbrace{\frac{p(x|\omega_i) P(\omega_i)}{\int\limits_{-\infty}^{\infty}p(x|\omega_j) P(\omega_j) dx}}_{\text{Continous features}}
      \text{ or } 
      \underbrace{\frac{p(x|\omega_i) P(\omega_i)}{\sum\limits_{j=1}^{c}p(x|\omega_j) P(\omega_j)}}_{\text{Discrete features \formelbuch{51}}}$
-    \hilight{$ Posterior = \frac{Likelihood \; \times \; Prior}{Evidence}$}
+    \hilight{$ \mathrm{Posterior} = \frac{\mathrm{Likelihood} \; \times \; \mathrm{Prior}}{\mathrm{Evidence}}$}
   \end{center}
   
-  $$P(error|x) = \int_{-\infty}^{\infty} P(error, x) dx = \int_{-\infty}^{\infty} P(error|x) p(x) dx$$
-  $$P(error|x) = \min\Big(P(\omega_1|x), P(\omega_2|x)\Big)$$
-  
-  
+where we call $p(x|\omega_i)$ the likelihood of $\omega_i$ with respect to $x$,
+and $p(x)$ the evidence factor, which is merely a scale factor. \\
+
+The probability of error is the average of all error probabilities:
+  \begin{align*}
+      P(\error|x) &= \int_{-\infty}^{\infty} P(\error, x) dx = \int_{-\infty}^{\infty} P(\error|x) p(x) dx \\
+       &= \min\Big(P(\omega_1|x), \ldots, P(\omega_c|x)\Big)
+  \end{align*}
+
+
 \skriptsubsection{Continuous Features}{24}
+When observing a pattern $\mathbf{x}$ and the true state of nature is $\omega_j$,
+the action $\alpha_i$ leads to the \emph{loss} $\lambda(\alpha_i|\omega_j)$.
+The conditional risk is then 
+$R(\alpha_i|\bfx) = \sum\limits_{j=1}^c \lambda(\alpha_i|\omega_j)P(\omega_j|\mathbf{x})$
+
 The overall risk $R$ must be minimized:
-$$R(\alpha_i|\mathbf{x}) = \sum\limits_{j=1}^c \lambda(\alpha_i|\omega_j) P(\omega_j|\mathbf{x})$$
-Action: $\alpha(\bm x)$, feature space: $\mathbf{R}^d$; loss or cost function when taking action $i$ 
-when the state of nature is $j$: $\lambda(\alpha_i|\omega_j)$
+$R = \int R(\alpha(\bfx)|\bfx)p(\bfx) d\bfx$
+This is achieved by computing the conditional risk for $i=1,\ldots,a$ 
+and selecting the action $\alpha_i$ for which $R(\alpha_i|\bfx)$ is minimal.
+The resulting minimum overall risk is called the \emph{Bayes risk} $R^*$.
   
 \end{minipage} \vspace{1cm}
 \begin{minipage}{9cm}
@@ -31,49 +46,64 @@ when the state of nature is $j$: $\lambda(\alpha_i|\omega_j)$
 \skriptsubsection{Two-Category Classification}{25}
 Decide $\omega_1$ when
 $$\frac{p(\mathbf{x}|\omega_1)}{p(\mathbf{x}|\omega_2)} > \underbrace{
-\frac{\lambda_{12} - \lambda_{22}}{\lambda_{21} - \lambda_{11}} \frac{P(\omega_2)}{P(\omega_1)}}_{\text{constant}}$$
+\overbrace{\frac{\lambda_{12} - \lambda_{22}}{\lambda_{21} - \lambda_{11}}}^{\text{=1 for 0-1 assumption}} \frac{P(\omega_2)}{P(\omega_1)}}_{\text{constant}}$$
 where $\lambda_{12}$, $\lambda_{21}$ are the costs for a wrong decision and 
 $\lambda_{11}$, $\lambda_{22}$ for the correct decision (which are usually $0$).
 
 \skriptsubsection{Classifiers}{29}
-\subsubsection{Multicategory Case}
-Discriminant functions: $g_i(\mathbf{x}) > g_j(\mathbf{x})$ for all $j \neq i$
-$$g_i(\mathbf{x}) = P(\omega_i|x) = 
-\frac{p(x|\omega_i) P(\omega_i)}{\sum\limits_{j=1}^{c}p(x|\omega_j) P(\omega_j)}$$
+\begin{multicols}{2}
+    \subsubsection{Multicategory Case}
+    Discriminant functions: $g_i(\mathbf{x}) > g_j(\mathbf{x})$ for all $j \neq i$
+    $$g_i(\mathbf{x}) = P(\omega_i|x) = 
+    \frac{p(x|\omega_i) P(\omega_i)}{\sum\limits_{j=1}^{c}p(x|\omega_j) P(\omega_j)}$$
+    
+    \subsubsection{Two-Category Case}
+    Decide $\omega_1$ when $g(\mathbf{x}) > 0$:
+    \begin{align*}
+        g(\mathbf{x}) \equiv g_1(\mathbf{x}) - g_2(\mathbf{x})
+        &&\text{or}&&
+        g(\mathbf{x}) = \ln \frac{p(\mathbf{x}|\omega_1)}{p(\mathbf{x}|\omega_2)} + \ln \frac{P(\omega_1)}{P(\omega_2)} 
+    \end{align*}
 
-\subsubsection{Two-Category Case}
-Decide $\omega_1$ when $g(\mathbf{x}) > 0$:
-$$g(\mathbf{x}) \equiv g_1(\mathbf{x}) - g_2(\mathbf{x})\hspace{5mm} \text{ or } \hspace{5mm}  
-g(\mathbf{x}) = \ln \frac{p(\mathbf{x}|\omega_1)}{p(\mathbf{x}|\omega_2)} + \ln \frac{P(\omega_1)}{P(\omega_2)}$$
-
+\end{multicols}
 
 \skriptsubsection{Normal Density}{31}
+  The normal density is a model for the case where the feature vectors $\bfx$ 
+  for a given class $\omega_i$ are randomly corrupted versions for a prototype vector $\boldsymbol{\mu}_i$.
+  
   \skriptsubsubsection{Univariate Density}{32}
-  \begin{minipage}{12cm}
-  Viele kleine, unabhängige Zufallsvariable sammeln sich zu einer
-  normalverteilten Zufallsvariable.\\
-   $\varphi(x)=p(x)=\frac{1}{\sqrt{2
-  \pi}\sigma}\cdot e^{-\frac{(x-\mu)^2}{2\sigma^2}} = N(\mu ; \sigma^2) \qquad \mu=E(x)=\int\limits_{-\infty}^{\infty}{x p(x) dx}$\\ 
+  \begin{minipage}{11.5cm}
+  $\varphi(x)=p(x)=\frac{1}{\sqrt{2
+  \pi}\sigma}\cdot e^{-\frac{(x-\mu)^2}{2\sigma^2}} = N(\mu ; \sigma^2) \qquad \mu=\expected(x)=\int\limits_{-\infty}^{\infty}{x p(x) dx}$\\ 
   $F(x)=\frac{1}{\sqrt{2
-  \pi}\sigma}\cdot \int\limits^{x}_{-\infty}{e^{-\frac{(\tilde{x} -\mu)^2}{2\sigma^2}}} \qquad \sigma^2=E\left[(x-\mu)^2\right]=\int\limits_{-\infty}^{\infty}{(x-\mu)^2 p(x) dx}$ \\
+  \pi}\sigma}\cdot \int\limits^{x}_{-\infty}{e^{-\frac{(\tilde{x} -\mu)^2}{2\sigma^2}}} \qquad \sigma^2=\expected\left[(x-\mu)^2\right]=\int\limits_{-\infty}^{\infty}{(x-\mu)^2 p(x) dx}$ \\
   % = N(\mu ; \sigma^2),\tilde{x}} $
-  \textbf{Standardisierung}\\
-  Erwartungswert: $E(X)=\mu$ \hspace{4mm}(=0 bei Standardnormalver.)\\ 
-  Varianz \hspace{11.5mm}: $var(X)=\sigma^2$ (=1 bei Standardnormalver.)\\ \\
-  $x=\dfrac{X-\mu}{\sigma}$ \hspace{5mm} $x$ aus Tabelle
-  \end{minipage}
+  
+  \textbf{Standard normal distribution}\\
+  
+  \begin{tabular}{lll}
+      Expected value: & $\expected(X)=\mu$ & (=0 for standard normal dist.)\\ 
+      Variance: & $\mathrm{var}(X)=\sigma^2$ & (=1 for standard normal dist.)\\
+      $x=\dfrac{X-\mu}{\sigma}$ & $x$ aus Tabelle & \\
+  \end{tabular} \\
+  $ 68\% $ of all values lie within $[ \mu - \sigma, \mu + \sigma]$,
+  $ 95\% $ within $[ \mu - 2\sigma, \mu + 2\sigma]$, and 
+   $99.7\% $ within $[ \mu - 3\sigma, \mu + 3\sigma]$
+  \end{minipage}\hspace{0.5cm}
   \begin{minipage}{7cm}
   \includegraphics[width=7cm]{images/normalverteilung.png}
-  Dichtefunktion (oben) und Verteilungsfunktion (unten) der Normalverteilung. 
+  Probability density function and cumulative distribution function of the normal distribution. 
   \end{minipage} \\ \\ 
- $ 68\% $ der Werte liegen im Intervall $[ \mu - \sigma, \mu + \sigma]$, $95\% $ in $[ \mu - 2\sigma, \mu + 2\sigma]$, $99.7\% $ in $[ \mu - 3\sigma, \mu + 3\sigma]$
+
 
 
 
 \skriptsubsubsection{Multivariate Density}{33}
-  $N(\boldsymbol{\mu}, \boldsymbol{\Sigma}) \backsim p(\mathbf{x}) = \frac{1}{(2\pi)^{d/2} | \boldsymbol{\Sigma}|^{1/2}} \exp \bigg[-\frac{1}{2} (\mathbf{x} - \boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x}-\boldsymbol{\mu})\bigg]$
-  \\
-  \subsubsubsection{The whitening transform} leads to a proportional matrix of the identity matrix $\mathbf{I}$:
+  \begin{equation*}
+      N(\boldsymbol{\mu}, \boldsymbol{\Sigma}) \backsim p(\mathbf{x}) = \frac{1}{(2\pi)^{d/2} | \boldsymbol{\Sigma}|^{1/2}} \exp \bigg[-\frac{1}{2} (\mathbf{x} - \boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x}-\boldsymbol{\mu})\bigg]
+  \end{equation*}
+
+  \subsubsubsection{The whitening transform}\formelbuch{34} leads to a proportional matrix of the identity matrix $\mathbf{I}$:
   $\mathbf{A}_w = \boldsymbol{\Phi} \boldsymbol{\Lambda}^{-1/2}$ 
   where $\mathbf{\Phi}$ is matrix whose columns are the orthonormal eigenvectors of 
   $\mathbf{\Sigma}$ and $\mathbf{\Lambda}^{1/2}=\begin{bmatrix}
@@ -82,7 +112,7 @@ g(\mathbf{x}) = \ln \frac{p(\mathbf{x}|\omega_1)}{p(\mathbf{x}|\omega_2)} + \ln 
   \ldots
   \end{bmatrix}$ its eigenvalues.
   
-  \subsubsubsection{Mahalanobis Distance} from $\mathbf{x}$ to $\boldsymbol{\mu}$: $r^2 = (\mathbf{x}-\boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x}-\boldsymbol{\mu})$ 
+  \subsubsubsection{Mahalanobis Distance}\formelbuch{35} from $\mathbf{x}$ to $\boldsymbol{\mu}$: $r^2 = (\mathbf{x}-\boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x}-\boldsymbol{\mu})$ 
   is with the co-/ variance ``normalized'' distance from the given point to the mean.
   
   
@@ -98,34 +128,35 @@ g(\mathbf{x}) = \ln \frac{p(\mathbf{x}|\omega_1)}{p(\mathbf{x}|\omega_2)} + \ln 
 
   \skriptsubsubsection{Discriminant Functions for the Gaussian Density}{36}
   \label{sec:bayes_discriminant_function}
-  \subsubsubsection{Case 1: $\Sigma_i = \sigma^2 I$}\\
+  \subsubsubsection{Case 1: $\Sigma_i = \sigma^2 I$\formelbuch{36}}\\
   Same variance in all independent features.
   The linear discriminant function turns to: 
-  $$g_i(\mathbf{x}) = \mathbf{w}_i^T \mathbf{x} + w_{i0} \text{ with } 
-  \mathbf{w}_i = \frac{1}{\sigma^2}\boldsymbol{\mu}_i \text{ and }
+  $$g_i(\mathbf{x}) = \mathbf{w}_i^T \mathbf{x} + w_{i0} \quad \text{with} \quad
+  \mathbf{w}_i = \frac{1}{\sigma^2}\boldsymbol{\mu}_i \quad \text{and} \quad 
   w_{i0} = -\frac{1}{2\sigma^2} \boldsymbol{\mu}_i^T \boldsymbol{\mu}_i + \ln(P(\omega_i))$$
   
   The decision surface is a plane: $\mathbf{w}^T(\mathbf{x}-\mathbf{x}_0) = 0$ with $\mathbf{w} = \boldsymbol{\mu}_i - \boldsymbol{\mu}_j$ and 
   $\mathbf{x}_0 = \frac{1}{2}(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j) - \frac{\sigma^2}{||\boldsymbol{\mu}_i-\boldsymbol{\mu}_j||^2} \ln\left(\frac{P(\omega_i)}{P(\omega_j)}\right) (\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)$
   
   
-  \subsubsubsection{Case 2: $\Sigma_i = \Sigma$}\\
+  \subsubsubsection{Case 2: $\Sigma_i = \Sigma$\formelbuch{39}}\\
   Some covariance matrix for all classes.
   The linear discriminant function turns to: 
-  $$g_i(\mathbf{x}) = \mathbf{w}_i^T \mathbf{x} + w_{i0} \text{ with } 
-  \mathbf{w}_i = \boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i \text{ and }
+  $$g_i(\mathbf{x}) = \mathbf{w}_i^T \mathbf{x} + w_{i0} \quad \text{with} \quad
+  \mathbf{w}_i = \boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i \quad \text{and} \quad
   w_{i0} = -\frac{1}{2} \boldsymbol{\mu}_i^T \boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i + \ln(P(\omega_i))$$
   
-  The decision surface: $\mathbf{w}^T(\mathbf{x}-\mathbf{x}_0) = 0$ with $\mathbf{w} = \boldsymbol{\Sigma}^{-1} (\boldsymbol{\mu}_i - \boldsymbol{\mu}_j)$ and 
+  The decision surface: $\mathbf{w}^T(\mathbf{x}-\mathbf{x}_0) = 0$ \quad with \\
+  $\mathbf{w} = \boldsymbol{\Sigma}^{-1} (\boldsymbol{\mu}_i - \boldsymbol{\mu}_j)$ \quad and \quad 
   $\mathbf{x}_0 = \frac{1}{2}(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j) - \frac{\sigma^2}{(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)^T \boldsymbol{\Sigma}^{-1} (\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)} \ln\left(\frac{P(\omega_i)}{P(\omega_j)}\right) (\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)$
   
   
-  \subsubsubsection{Case 3: $\Sigma_i = $ arbitrary}\\
+  \subsubsubsection{Case 3: $\Sigma_i = $ arbitrary\formelbuch{41}}\\
   General case.
   The discriminant function is now quadratic: 
-  $$g_i(\mathbf{x}) = \mathbf{x}^T \mathbf{W}_i^T \mathbf{x} + \mathbf{w}_i^T \mathbf{x} +w_{i0} \text{ with } 
-  \mathbf{W}_i = -\frac{1}{2} \boldsymbol{\Sigma}^{-1} \text{ and }
-  \mathbf{w}_i = \boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i \text{ and }
+  $$g_i(\mathbf{x}) = \mathbf{x}^T \mathbf{W}_i^T \mathbf{x} + \mathbf{w}_i^T \mathbf{x} +w_{i0} \quad\text{with}$$
+  $$\mathbf{W}_i = -\frac{1}{2} \boldsymbol{\Sigma}^{-1} \quad\text{and}\quad
+  \mathbf{w}_i = \boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i \quad\text{and}\quad
   w_{i0} = -\frac{1}{2} \boldsymbol{\mu}_i^T\boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i - \frac{1}{2}\ln(|\boldsymbol{\Sigma}_i|) + \ln(P(\omega_i))$$
   
   The decision surface cannot be described easily anymore as it may contain holes and nonlinear constructions.
