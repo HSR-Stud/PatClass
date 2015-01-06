@@ -342,6 +342,71 @@
  	  When $\bm R = \bm 1$ the step size becomes $\eta(k) = \frac{\|\bm Y^T |e(k|)\|^2}{\|\bm Y \bm Y^T |e(k)|\|^2}$.\\
  	  When $\bm R = \frac{1}{\eta} (\bm Y^T \bm Y)^{-1}$ this procedure becomes the original Ho-Kashyap.
  	
+ 	\skriptsubsection{Support Vector Machines (SVM)}{259}
+    % This section closely follows the lecture notes on support vector machines by Andrew Ng (http://cs229.stanford.edu/notes/cs229-notes3.pdf)
+    %TODO: add nice image
+    We define the \emph{functional margin} of the hyperplane $(w,b)$ to a training example $(x^{(i)},y^{(i)})$ by
+    \begin{equation*}
+        \hat{\lambda}^{(i)} = y^{(i)} (w^T x + b)
+    \end{equation*}
+    as multiplying $w$ and $b$ by a factor increases the functional margin without changing the separating hyperplane, 
+    the \emph{geometric margin} to a training example is introduced by
+    \begin{equation*}
+        \lambda^{(i)} = y^{(i)} \left( \left( \frac{w}{||w||} \right)^T x^{(i)} + \frac{b}{||w||} \right)
+    \end{equation*}
+    
+    The \emph{geometric margin} $\lambda$ is the smallest of the geometric margins of a training set $\lambda = \min\limits_{i=1,\ldots,m}\lambda^{(i)}$.
+    
+    \paragraph{Optimal margin classifier}~\\
+    An optimal margin classifier can be achieved by maximizing $\lambda$ subject to $y^{(i)}(w^T x^{(i)}+b)\leq\lambda$ and $||w||=1$.
+    This can be equivalently achieved by the following (primal) optimization problem
+    \begin{equation*}
+        \min_{w,b} \frac{1}{2} ||w||^2 \qquad \text{s.t.} \quad y^{(i)}(w^T x^{(i)} + b) \geq 1, \quad i=1,\ldots,m
+    \end{equation*}
+    which can be converted to the dual optimization problem
+    \begin{equation*}
+        \max_{\alpha} \sum\limits_{i=1}^m \alpha_i - \frac{1}{2}\sum\limits_{i,j=1}^m y^{(i)}y^{(j)}\alpha_i\alpha_j \langle x^{(i)},x^{(j)} \rangle
+        \qquad \text{s.t.} \quad \alpha_i \geq 0, \quad i=1,\ldots,m \qquad \text{and} \quad \sum\limits_{i=1}^m \alpha_i y^{(i)}=0
+    \end{equation*}
+    
+    \paragraph{Kernels}~\\
+    Let $\Phi(x)$ denote a \emph{feature mapping} which maps the attributes to a higher-dimensional feature space.
+    Since the optimal margin classifier depends solely on inner products $\langle x,z \rangle$, 
+    these inner products can be replaced by $\langle \Phi(x),\Phi(z) \rangle$. 
+    By specifying a \emph{Kernel} to be $K(x,z) = \Phi(x)^T \Phi(z)$ we can replace $\langle x,z \rangle$ by $K(x,z)$ and the algorithm will use the features $\Phi$.
+    This allows the SVM to learn in a high-dimensional feature space given by $\Phi$ without having to explicitly find the vectors $\Phi(x)$. \\
+    
+    The most common Kernel function is the radial basis function or Gaussian kernel 
+    $K(x,z) = \exp\left(-\frac{||x-z||^2}{2 \sigma^2}\right)$
+    which corresponds to an infinite dimensional feature mapping $\Phi$.  \\
+    
+    \paragraph{Regularization and the non-separable case}~\\
+    To make the algorithm work for non-linearly separable datasets as well as be less sensitive to outliers, we use $l_1$ regularization:
+    \begin{equation*}
+        \min_{w,b} \frac{1}{2}||w||^2 + C \sum\limits_{i=1}^m \xi_i
+        \qquad \text{s.t.} \quad
+        y^{(i)}(w^T x^{(i)} + b) \geq 1-\xi_i,
+        \quad \text{and} \quad
+        \xi_i \geq 0,
+        \qquad i=1,\ldots,m
+    \end{equation*}
+    This allows functional margins less than 1, but increases the objective function by $C\xi_i$.
+    The parameter $C$ controls the weighing between making $||w||^2$ small and ensuring that most examples have a margin of at least 1.
+    The dual optimization problem is
+    \begin{equation*}
+        \max_{\alpha} \sum\limits_{i=1}^m \alpha_i - \frac{1}{2}\sum\limits_{i,j=1}^m y^{(i)} y^{(j)} \alpha_i \alpha_j \langle x^{(i)},x^{(j)} \rangle
+        \qquad \text{s.t.} \quad
+        0 \leq \alpha_i \leq C, \quad i=1,\ldots,m
+        \qquad \text{and} \quad
+        \sum\limits_{i=1}^m \alpha_i y^{(i)}=0
+    \end{equation*}
+    
+    The Lagrangian multipliers $\alpha_i$ contain information on the corresponding training point:
+    \begin{align*}
+        \alpha_i = 0 & \quad\Rightarrow\quad y^{(i)}(w^T x^{(i)}+b) \geq 1 \qquad \text{training point is classified correctly}\\
+        \alpha_i = C & \quad\Rightarrow\quad y^{(i)}(w^T x^{(i)}+b) \leq 1 \qquad \text{training point violates constraints}\\
+        0 < \alpha_i < C & \quad\Rightarrow\quad y^{(i)}(w^T x^{(i)}+b) = 1 \qquad \text{training point is a support vector}\\
+    \end{align*}
  	
  	\skriptsubsection{Overview over Different Procedures}{260} 
  	
