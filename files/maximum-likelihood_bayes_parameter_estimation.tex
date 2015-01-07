@@ -69,7 +69,7 @@
   with known $\sigma=\Sigma$. e.g. known measurement system but unknown measurement value\\
   \subsubsubsection{Finding the A Posteriori Density}
   \begin{aufzaehlung}
-    \item Model: $p(x|\mu) \sim N(\mu, \sigma^2)$ ($\sigma$ is known)
+    \item Model: $p(x|\mu) \sim N(\mu, \sigma^2)$ ($\sigma^2$ is known)
     \item Goal: Finding $\mu$ as the only unknown parameter
     \item Best prior guess: $p(\mu) \sim N(\mu_0, \sigma_0^2)$
     \item Crucial assumption: Knowing the prior distribution of $\mu$ ($\mu$ is normal distributed).
@@ -176,6 +176,7 @@
   \begin{minipage}{5cm}
   	\includegraphics[width=5cm]{./images/principalComp.png}
   \end{minipage} 
+  
   \skriptsubsubsection{Fisher Linear Discriminant}{117}
   \begin{minipage}{10.5cm}
   Very cool (according to Guido).
@@ -183,12 +184,13 @@
       \item Calculate the $d$-dimensional sample mean for every class
         $\bm{m}_i = \frac{1}{n_i} \sum\limits_{\bm{x} \in \mathcal{D}_i} \bm{x}$
       \item Obtain scatter matrices (= covariance matrix without division of N):
-        $\bm{S}_i = \frac{1}{n_i} \sum\limits_{\bm{x} \in \mathcal{D}_i} 
+        $\bm{S}_i = \sum\limits_{\bm{x} \in \mathcal{D}_i} 
         (\bm{x}-\bm{m}_i) (\bm{x}-\bm{m}_i)^T$
         and the withing-class scatter matrix for the two-category case
         $\bm{S}_W = \bm{S}_1 + \bm{S}_2$
       \item Finding the Fisher linear discriminant:
         $\bm{w} = \bm{S}_W^{-1} (\bm{m}_1 - \bm{m}_2)$
+        (normalize to$||\bm{w}||=1$.)
       \item Now we can transform and reduce dimensionality to a scalar:
         $y = \bm{w}^T \bm{x}$
     \end{aufzaehlung}

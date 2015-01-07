@@ -167,6 +167,8 @@ $\lambda_{11}$, $\lambda_{22}$ for the correct decision (which are usually $0$).
 \skriptsubsection{Independent Binary Features}{52}
   Every component $x_i$ of vector $\mathbf{x}$ are either 0 or 1. The class-conditional probability is:\\
   $$P(\mathbf{x}|\omega_1)=\prod\limits_{i=1}^d p_i^{x_i}(1-p_i)^{1-x_i} \qquad ( p_i^{x_i}(1-p_i)^{1-x_i} \Rightarrow\text{ either }p_i\text{ or }1-p_i)$$
+  where $p_i = \operatorname{Pr}\left[x_i=1|\omega_1\right]$ and $q_i = \operatorname{Pr}\left[ x_i=1 | \omega_2 \right]$.
+  
   
   Discriminant function: $g(\bm x) = \sum\limits_{i=1}^d w_i x_i + w_0$ with 
   $w_i = \ln \frac{p_i(1-q_i)}{q_i(1-p_i)}$ and 

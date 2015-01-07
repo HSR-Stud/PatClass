@@ -83,7 +83,7 @@
 
     \begin{minipage}{11cm}
     
-    \skriptsubsubsection{Normalisation / Margin}{223}
+    \skriptsubsubsection{Normalization / Margin}{223}
     In the separable case, the vector product of every training sample of class $\omega_1$ with the solution
     vector $\bm a$ is positive, and with the class $\omega_2$ is negative.\\
     For easier handling of the training data, all samples labeled $\omega_2$ are replaced by their negatives.
@@ -203,7 +203,7 @@
     
     \skriptsubsection{Minimum Squared-Error Procedures}{240}
     In comparison to the perceptron processes, here all samples are used. 
-    The goal is to solve $\bm a^T \bm y_i = b_i$ with $b_i$ to be specified.
+    The goal is to solve $\bm a^T \bm y_i = b_i$
     \begin{equation*}
     \bm Y \bm a = \bm b
     \qquad \text{or} \qquad
@@ -229,7 +229,7 @@
     \end{bmatrix} \qquad \text{with} \qquad n \gg d
     \end{equation*}
     
-    where $b_i$ have to be \textbf{positive} constants and is the \emph{margin vector}. 
+    where $\bm{b}$ is the \emph{margin vector} and $b_i$ have to be positive constants. 
     The criterion function $\bm J_S(\bm a)=\|\bm Y \bm a - \bm b \|^2$ lead 
     us to the minimum squared error (MSE) solution of $\bm Y \bm a = \bm b$
     \begin{equation*}
