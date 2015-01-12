@@ -51,7 +51,7 @@
  \begin{minipage}{12cm}
  \begin{aufzaehlung}
    \item Initialize $\omega$ with uniformly distributed random values. \\
-   Borders for $\omega_{ji}: \pm \frac{1}{\sqrt{d}}$, $\tilde \omega_{kj}: \pm \frac{1}{n_H}$
+   Borders for $\omega_{ji}: \pm \frac{1}{\sqrt{d}}$, $\tilde \omega_{kj}: \pm \frac{1}{\sqrt{n_H}}$
    \item Define target $\bm t$ of given training samples $\bm x $ ($t_k=1$, $t_{i \neq k} = -1$)
    \item Classify one training sample $\bm x$ by feedforward operation
    \item Calculate the \em output sensitivity \em $\tilde{\delta}_k \equiv (t_k - z_k) f'(\tilde{net}_k)$
