@@ -21,7 +21,6 @@ and $p(x)$ the evidence factor, which is merely a scale factor. \\
 The probability of error is the average of all error probabilities:
   \begin{align*}
       P(\error) &= \int_{-\infty}^{\infty} P(\error, x) dx = \int_{-\infty}^{\infty} P(\error|x) p(x) dx \\
-       &= \min\Big(P(\omega_1|x), \ldots, P(\omega_c|x)\Big)
   \end{align*}
 
 
@@ -136,7 +135,7 @@ $\lambda_{11}$, $\lambda_{22}$ for the correct decision (which are usually $0$).
   w_{i0} = -\frac{1}{2\sigma^2} \boldsymbol{\mu}_i^T \boldsymbol{\mu}_i + \ln(P(\omega_i))$$
   
   The decision surface is a plane: $\mathbf{w}^T(\mathbf{x}-\mathbf{x}_0) = 0$ with $\mathbf{w} = \boldsymbol{\mu}_i - \boldsymbol{\mu}_j$ and 
-  $\mathbf{x}_0 = \frac{1}{2}(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j) - \frac{\sigma^2}{||\boldsymbol{\mu}_i-\boldsymbol{\mu}_j||^2} \ln\left(\frac{P(\omega_i)}{P(\omega_j)}\right) (\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)$
+  $\mathbf{x}_0 = \frac{1}{2}(\boldsymbol{\mu}_i+\boldsymbol{\mu}_j) - \frac{\sigma^2}{||\boldsymbol{\mu}_i-\boldsymbol{\mu}_j||^2} \ln\left(\frac{P(\omega_i)}{P(\omega_j)}\right) (\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)$
   
   
   \subsubsubsection{Case 2: $\Sigma_i = \Sigma$\formelbuch{39}}\\
@@ -148,7 +147,7 @@ $\lambda_{11}$, $\lambda_{22}$ for the correct decision (which are usually $0$).
   
   The decision surface: $\mathbf{w}^T(\mathbf{x}-\mathbf{x}_0) = 0$ \quad with \\
   $\mathbf{w} = \boldsymbol{\Sigma}^{-1} (\boldsymbol{\mu}_i - \boldsymbol{\mu}_j)$ \quad and \quad 
-  $\mathbf{x}_0 = \frac{1}{2}(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j) - \frac{\sigma^2}{(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)^T \boldsymbol{\Sigma}^{-1} (\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)} \ln\left(\frac{P(\omega_i)}{P(\omega_j)}\right) (\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)$
+  $\mathbf{x}_0 = \frac{1}{2}(\boldsymbol{\mu}_i+\boldsymbol{\mu}_j) - \frac{\sigma^2}{(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)^T \boldsymbol{\Sigma}^{-1} (\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)} \ln\left(\frac{P(\omega_i)}{P(\omega_j)}\right) (\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)$
   
   
   \subsubsubsection{Case 3: $\Sigma_i = $ arbitrary\formelbuch{41}}\\
