@@ -16,7 +16,7 @@
       
     \begin{multicols}{2}
 	    \skriptsubsubsection{Multicategory Case}{218}
-		There exist several possibility to create multicategory classifier with $c$ classes.
+		There exist several possibilities to create a multicategory classifier with $c$ classes.
 		We could use $c$ linear discriminant functions to separate points belonging 
 		to $\omega_i$ and those not belonging to $\omega_i$.
 		Another possibility would be to create $c(c-1)/2$ discriminants, one for each pair of classes.
@@ -28,7 +28,7 @@
     
     By defining $c$ linear discriminant functions
     \begin{equation*}
-	    g_i(\bfx) = \mathbf{w}_i^t\bfx + w_{i0} \quad i=1,\ldots,c
+	    g_i(\bfx) = \mathbf{w}_i^T\bfx + w_{i0} \quad i=1,\ldots,c
     \end{equation*}
 	we can assign $\bfx$ to $\omega_i$ if $g_i(\bfx) > g_j(\bfx)$ for all $j \neq i$.
 	This classifier is called a \emph{linear machine}.
@@ -39,18 +39,18 @@
   
   \begin{multicols}{2}
 	  \subsubsection{Quadratic Discriminant Function}
-	      By multiplying features with itself, ``new'' features can be created and possibly improve the classification
+	      By multiplying features with themselves, ``new'' features can be created and possibly improve the classification
 	      results. This results in the quadratic discriminant function
 	      
 	      \begin{equation*}
-		      g(\bm x) = w_0 + \sum\limits_{i=1}^d w_i x_i + \sum\limits_{i=1}^d \sum\limits_{i=1}^d w_{ij} \underbrace{x_i x_j}_{\text{new feature}}
+		      g(\bm x) = w_0 + \sum\limits_{i=1}^d w_i x_i + \sum\limits_{i=1}^d \sum\limits_{j=1}^d w_{ij} \underbrace{x_i x_j}_{\text{new feature}}
 	      \end{equation*}
 	      
-	      and can produce more complicated separating surfaces, because the problem will be mapped in a more dimensional space.
-	      The data itself uses not more dimensions. E.g. The data of an one dimension problem stays on one line. \\
+	      and can produce more complicated separating surfaces, because the problem will be mapped into a more dimensional space.
+	      The data itself doesn't use more dimensions, e.g. the data of a one dimension problem stays on one line. \\
 	      
       	 \includegraphics[width=6cm]{./images/map1DTo2D.png} \\
-       	 Feature mapping from one dimension into 2D with $x^2$ \\
+       	 Feature mapping from one dimension into 3D with $\bm{y}=\begin{pmatrix}1&x&x^2\end{pmatrix}^T$ \\
        \columnbreak	 
    	   \subsubsection{Generalized Linear Discriminant Functions}
    	     By continuing this approach, polynomial discriminant function or generalized linear discriminant 
@@ -61,10 +61,10 @@
    	     or augmented features) are arbitrary functions of $\bm x$ and \textbf{don't have to be linear}.
    	     Therefore, the discriminant functions are linear in $\bm y$ but not in $\bm x$.\\
    	     The disadvantage is a high computational complexity with high dimensions and that much 
-   	     \textbf{more trainings data} are needed to avoid overfitting.
+   	     \textbf{more training data} is needed to avoid overfitting.
    	     
     \subsubsection{Augmented Feature Vector}
-      To include the offset $w_0$ of the discriminant function $g(\bm x) = w_0 + w_1 x_1 + w_2 x_2 + \ldots + w_n x_d$ into the weight vector $\bm w$ 
+      To include the offset $w_0$ of the discriminant function $g(\bm x) = w_0 + w_1 x_1 + w_2 x_2 + \ldots + w_n x_d$ into the weight vector $\bm w$,
       a one is added to the feature vector  $\bm y = [1, x_1, x_2, \ldots, x_n]^T = [1, \bm x]^T$.
       This vector is called \emph{augmented feature vector} and the resulting weight vector $\bm a = [w_0, w_1, w_2, \ldots w_d]^T = [w_0, \bm w]^T$  \emph{augmented
       weight vector}.
@@ -76,7 +76,7 @@
 
 
    
-  \subsection{Two-Category Linearly Separable Case}
+  \skriptsubsection{Two-Category Linearly Separable Case}{223}
 
     If a linear weight vector exists that classifies all samples correctly, then the samples
     are said to be linearly separable.
@@ -118,7 +118,7 @@
       The \textbf{optimal step size} can be calculated with:
       $\eta(k)= \frac{\|\bm{\nabla J}\|^2}{\bm{\nabla J^T  H \nabla J}}$ where $\bm H$ is the Hessian matrix
        (matrix of second partial derivatives $\partial^2 J / \partial a_i \partial a_j$, see Newton's Algorithm).
-      Calculating the Hessian matrix in every step is normally too expensive so that the optimal solution is used very seldom.
+      Calculating the Hessian matrix in every step is normally too expensive so the optimal solution is used very seldom.
 
     \skriptsubsubsection{Newton's Algorithm}{226}
       The Newton method is not used widely due to the fact that a matrix has to be inverted on every
@@ -130,20 +130,21 @@
       \end{bmatrix}$$
       This is a simplification of the optimum step size from the section above.
   
-  \skriptsubsubsection{Minimizing the Perceptron Criterion Function}{227}
+  \skriptsubsection{Minimizing the Perceptron Criterion Function}{227}
   \begin{minipage}{12cm}
-    The problem is to construct a criterion function for solving the linear inequalities $\bm a^T \bm y > 0$. 
-    A criteria function which just counts the misclassified sample would be constant at the most position. 
-    Therefore the steepest descent would not work. \\
+    The problem is to construct a criterion function for solving the linear inequalities $\bm a^T \bm y_i > 0$. 
+    A criteria function which just counts the misclassified samples would be constant at the most positions. 
+    Therefore gradient descent would not work. \\
     
     A better idea is the \textbf{Perceptron Criterion Function}
-    $\bm J_p(\bm a) = \sum\limits_{\bm y \in \mathcal{Y}_k} (-\bm a^T \bm y)$  with $\mathcal{Y}$ as the set
+    $\bm J_p(\bm a) = \sum\limits_{\bm y \in \mathcal{Y}} (-\bm a^T \bm y)$  with $\mathcal{Y}(a)$ as the set
     of misclassified samples by the current weight vector $\bm a$.\\
-    The gradient is $\bm {\nabla J}_p = \sum\limits_{\bm y\in \mathcal{Y}_k} -\bm y$
+    The gradient is $\bm {\nabla J}_p = \sum\limits_{\bm y\in \mathcal{Y}} -\bm y$
     which leads to the update rule 
     \begin{equation*}
         \bm a(k+1) = \bm a(k) + \eta(k) \sum\limits_{\bm y\in \mathcal{Y}_k} \bm y
     \end{equation*}
+    where $\mathcal{Y}_k$ is the set of samples misclassified by $\bm a(k)$.
        
    	\end{minipage}
     \hspace{8mm} 
@@ -153,9 +154,9 @@
     
     \begin{multicols}{3}
         \skriptsubsubsubsection{Batch Perceptron}{228}\\
-        The batch perceptron algorithm yields in a solution for linearly separable problems. 
+        The batch perceptron algorithm yields a solution for linearly separable problems. 
         It sums up all misclassified samples and then performs a weight update (batch). 
-        This has to be done until all of the samples will be classified correctly.  
+        This has to be done until all of the samples are classified correctly.  
     \vfill
     \columnbreak
         \skriptsubsubsubsection{Fixed-Increment Single-Sample Perceptron}{230}\\
@@ -172,22 +173,22 @@
     \skriptsubsubsection{Relaxation Procedures}{235}
     \begin{minipage}{12cm}
     The \emph{descent algorithm} uses a square in the criterion function:
-	$\bm J_q(\bm a) = \sum\limits_{\bm y \in \mathcal{Y}_k} (\bm a^T \bm y)^2$ with $\mathcal{Y}$ as the set
+	$\bm J_q(\bm a) = \sum\limits_{\bm y \in \mathcal{Y}} (\bm a^T \bm y)^2$ with $\mathcal{Y}$ as the set
     of misclassified samples.\\
     
   	Because the gradient is continuous, the criterion function $\bm J_q$ is smoother. The problem is that the algorithm is too smooth at the border and 
-  	the algorithm can converge to the border or worse to $\bm a=0$. 
+  	the algorithm can converge to the border or worse to $\bm a=\bm 0$. 
   	Another problem is that $\bm J_q$ is dominated by long training samples. \\
   	
   	A criterion function which solves both problems is: 
-  	$\bm J_r(\bm a) = \frac{1}{2} \sum\limits_{\bm y \in \mathcal{Y}_k} \frac{(\bm a^T \bm y - b)^2}{\|\bm y\|^2}$
-  	where $b$ is a new margin and $\mathcal{Y}(\bm a)$ is the set of samples for which $\bm a^T \bm y \leq b$. $J_r$ is never 
-  	negative and only zero when the whole set has been classified correctly inside margin.
+  	$\bm J_r(\bm a) = \frac{1}{2} \sum\limits_{\bm y \in \mathcal{Y}} \frac{(\bm a^T \bm y - b)^2}{\|\bm y\|^2}$
+  	where $b$ is a new margin and $\mathcal{Y}(\bm a)$ is the set of samples for which $\bm a^T \bm y \leq b$. $\bm J_r$ is never 
+  	negative and only zero when the whole set has been classified correctly inside the margin.
   	
   	This leads to the update rule
-  	$\mathbf{a}(k+1) = \mathbf{a}(k) + \eta(k)\sum_{\mathbf{y}\in\mathcal{Y}}\frac{b-\mathbf{a}^t\mathbf{y}}{||\mathbf{y}||^2}\mathbf{y}$
+  	$\mathbf{a}(k+1) = \mathbf{a}(k) + \eta(k)\sum_{\mathbf{y}\in\mathcal{Y}}\frac{b-\mathbf{a}^T\mathbf{y}}{||\mathbf{y}||^2}\mathbf{y}$
   	and the single-sample correction rule
-  	$\mathbf{a}(k+1) = \mathbf{a}(k) + \eta \frac{b-\mathbf{a}^t(k)\mathbf{y}^k}{||\mathbf{y}^k||^2}\mathbf{y}^k$
+  	$\mathbf{a}(k+1) = \mathbf{a}(k) + \eta \frac{b-\mathbf{a}^T(k)\mathbf{y}^k}{||\mathbf{y}^k||^2}\mathbf{y}^k$
   	where $\mathbf{y}^k$ is the $k$th sample.
 	   
     \end{minipage}
@@ -199,9 +200,9 @@
     
     \skriptsubsection{Nonseparable Behavior}{238}
     The algorithms up to now won't stop if the data is not separable. Moreover, we do not know if we get a ``good'' result if we stop after a long time.
-    One way is to reduce the influence of the wrong classified sample with $\eta(k)=1/k$ so that the solution will end in a ``good'' area.
+    One way is to reduce the influence of the wrong classified samples with $\eta(k)=1/k$ so that the solution will end in a ``good'' area.
     
-    \skriptsubsection{Minimum Squared-Error Procedures}{240}
+    \skriptsubsection{Minimum Squared-Error Procedures}{239}
     In comparison to the perceptron processes, here all samples are used. 
     The goal is to solve $\bm a^T \bm y_i = b_i$
     \begin{equation*}
@@ -222,7 +223,7 @@
     \vphantom{\vdots}\\
     \end{array} = 
     \begin{bmatrix}
-    	b_0\\
+    	b_1\\
     	\vdots\\
     	\vdots\\
     	b_n
@@ -230,10 +231,10 @@
     \end{equation*}
     
     where $\bm{b}$ is the \emph{margin vector} and $b_i$ have to be positive constants. 
-    The criterion function $\bm J_S(\bm a)=\|\bm Y \bm a - \bm b \|^2$ lead 
+    The criterion function $\bm J_S(\bm a)=\|\bm Y \bm a - \bm b \|^2$ leads 
     us to the minimum squared error (MSE) solution of $\bm Y \bm a = \bm b$
     \begin{equation*}
-        \bm a = (\bm Y^T \bm Y)^{-1} \bm Y^T b = \bm Y^\dagger \bm b
+        \bm a = (\bm Y^T \bm Y)^{-1} \bm Y^T \bm b = \bm Y^\dagger \bm b
     \end{equation*}
     where $\bm Y^\dagger \equiv (\bm Y^T \bm Y)^{-1} \bm Y^T$ is the \emph{pseudoinverse} of $\bm Y$.
     If $\bm Y$ is square and nonsingular, the pseudoinverse coincides with the regular inverse. \\
@@ -246,7 +247,7 @@
         \includegraphics[width=6cm]{./images/LMS.png}
     \end{wrapfigure}
     
-     As usual$\bm Y$ is built out of the augmented feature vector of $\omega_1$ and the augmented feature vector of $\omega_2$:\\
+     As usual, $\bm Y$ is built out of the augmented feature vector of $\omega_1$ and the augmented feature vector of $\omega_2$:\\
     $\bm Y = \begin{bmatrix}
     \bm 1_1 & \bm X_1 \\
     - \bm 1_2 & -\bm X_2  \\
@@ -256,10 +257,10 @@
     To avoid large matrix multiplications the LMS procedure updates the weight vector with every sample. 
     In contrast to the previous algorithms the LMS uses all samples.
     \begin{equation*}
-        \bm a(k+1)=\bm a(k)+\eta(k)\left(\bm b-\bm a^T(k)\bm y(k)\right)\bm y(k)
+        \bm a(k+1)=\bm a(k)+\eta(k)\left(b(k)-\bm a^T(k)\bm y_k\right)\bm y_k
     \end{equation*}
     
-    $\eta(k)$ has to decrease with $k$ to obtain convergence, e.g. $\eta(k)=n(1)/k$\\
+    $\eta(k)$ has to decrease with $k$ to obtain convergence, e.g. $\eta(k)=n(1)/k$.\\
 
     \skriptsubsubsubsection{Fisher's Linear Discriminant}{242}\\
         With $\bm b=\begin{bmatrix}
@@ -269,26 +270,26 @@
         scatter within two classes $\bm S_W = \sum_i \bm S_i$.\\
         
     \skriptsubsubsubsection{Asymptotic Approximation to an Optimal Discriminant}{243}\\
-    With  $\bm b=\bm 1$ the pseudoinverse approximate to the Bayes discriminant function $g_0 = P(\omega_1 | \bm x) - P(\omega_2 | \bm x)$\\
+    With  $\bm b=\bm 1_n$ the pseudoinverse approximates to the Bayes discriminant function $g_0(\bm x) = P(\omega_1 | \bm x) - P(\omega_2 | \bm x)$\\
 
- 	\skriptsubsubsubsection{Stochastic Approximation Method}{247}\\
+ 	\skriptsubsubsubsection{Stochastic Approximation Method}{246}\\
     The stochastic approximation method is an MSE procedure where the samples are drawn randomly.
     This results in a random sequence of weight vectors.
  	For each $\bm x$ we let $\theta$ be its \emph{label} with $\theta=+1$ if $\bm x$ is labeled $\omega_1$ and $\theta=-1$ if $\bm x$ is labeled $\omega_2$.
- 	The label variable $\theta$ can be thought of as noisy version of the Bayes discriminant function $g_0(\bm x)$.
+ 	The label variable $\theta$ can be thought of as a noisy version of the Bayes discriminant function $g_0(\bm x)$.
     This leads to the update rule
     \begin{equation*}
-        \bm a(k+1)=a(k)+\eta(k)(\theta_k - \bm a^T(k)\bm y_k)\bm y_k
+        \bm a(k+1)=\bm a(k)+\eta(k)(\theta_k - \bm a^T(k)\bm y_k)\bm y_k
     \end{equation*}
   	which is basically just the Widrow-Hoff rule.
   	With $\eta(k)=1/k$ the convergence is often very slow.
-  	A stochastic analog to \emph{Newton's rule} for would be
+  	A stochastic analog to \emph{Newton's rule} would be
   	\begin{equation*}
-     	\bm a(k+1)=a(k)+\bm R_{k+1}(\theta_k - \bm a^T(k)\bm y_k)\bm y_k
+     	\bm a(k+1)=\bm a(k)+\bm R_{k+1}(\theta_k - \bm a^T(k)\bm y_k)\bm y_k
      	\quad \text{with} \quad 
      	\bm R_{k+1}^{-1}= \bm R_{k}^{-1} + \bm y_k \bm y_k^T
      	\quad \text{or} \quad
-     	\bm R_{k+1}= \bm R_{k} + \frac{\bm R_{k} \bm y_k(\bm R_{k} \bm y_k)^T}{1+\bm y_k^T \bm R_{k} \bm y_k}
+     	\bm R_{k+1}= \bm R_{k} - \frac{\bm R_{k} \bm y_k(\bm R_{k} \bm y_k)^T}{1+\bm y_k^T \bm R_{k} \bm y_k}
  	\end{equation*}
  	where $\bm R_{k}$ is the covariance matrix, which is updated every sample.
  	
@@ -307,9 +308,9 @@
  	$$ \bm b(k+1)=\bm b(k)- \eta(k) \frac{1}{2} \left(\bm{\nabla_b J}_s - |\bm{\nabla_b J}_s|\right) \qquad 
  	0 <\eta < 2/\lambda_{max} \; (\lambda \text{ are the eigenvalues of } \bm Y^T \bm Y)$$
  	$|\bm{\nabla_b J}_s|$ states that every component is positive. 
- 	Gradient of $\bm J$ by $b$: $\bm{\nabla_b J}_s = 2\bm Y^T(\underbrace{\bm{Y a - b}}_{=e})$
+ 	Gradient of $\bm J$ by $b$: $\bm{\nabla_b J}_s = -2(\underbrace{\bm{Y a - b}}_{=e})$
  	
- 	The only problem is, that the procedure only stops if the data are linear separable and convergence 
+ 	The only problem is, that the procedure only stops if the data is linear separable and convergence 
  	is only achieved in \textbf{finite} steps. There is no boundary of steps and hence, \textbf{when should be stopped?}\\
  	 
  	 
@@ -339,26 +340,26 @@
         &$\bm a(k+1) = \bm a(k) + \eta \bm R \bm Y^T |\bm e(k)|$
     \end{tabular}
  	  
- 	  When $\bm R = \bm 1$ the step size becomes $\eta(k) = \frac{\|\bm Y^T |e(k|)\|^2}{\|\bm Y \bm Y^T |e(k)|\|^2}$.\\
+ 	  When $\bm R = \bm I$ the step size becomes $\eta(k) = \frac{\|\bm Y^T |e(k)|\|^2}{\|\bm Y \bm Y^T |e(k)|\|^2}$.\\
  	  When $\bm R = \frac{1}{\eta} (\bm Y^T \bm Y)^{-1}$ this procedure becomes the original Ho-Kashyap.
  	
  	\skriptsubsection{Support Vector Machines (SVM)}{259}
-    % This section closely follows the lecture notes on support vector machines by Andrew Ng (http://cs229.stanford.edu/notes/cs229-notes3.pdf)
+    This section closely follows the lecture notes on support vector machines by Andrew Ng.\\ %(http://cs229.stanford.edu/notes/cs229-notes3.pdf)
     %TODO: add nice image
     We define the \emph{functional margin} of the hyperplane $(w,b)$ to a training example $(x^{(i)},y^{(i)})$ by
     \begin{equation*}
         \hat{\lambda}^{(i)} = y^{(i)} (w^T x + b)
     \end{equation*}
-    as multiplying $w$ and $b$ by a factor increases the functional margin without changing the separating hyperplane, 
+    As multiplying $w$ and $b$ by a factor increases the functional margin without changing the separating hyperplane, 
     the \emph{geometric margin} to a training example is introduced by
     \begin{equation*}
         \lambda^{(i)} = y^{(i)} \left( \left( \frac{w}{||w||} \right)^T x^{(i)} + \frac{b}{||w||} \right)
     \end{equation*}
     
-    The \emph{geometric margin} $\lambda$ is the smallest of the geometric margins of a training set $\lambda = \min\limits_{i=1,\ldots,m}\lambda^{(i)}$.
+    The \emph{geometric margin} $\gamma$ is the smallest of the geometric margins of a training set $\lambda = \min\limits_{i=1,\ldots,m}\lambda^{(i)}$.
     
     \paragraph{Optimal margin classifier}~\\
-    An optimal margin classifier can be achieved by maximizing $\lambda$ subject to $y^{(i)}(w^T x^{(i)}+b)\leq\lambda$ and $||w||=1$.
+    An optimal margin classifier can be achieved by maximizing $\lambda$ subject to $y^{(i)}(w^T x^{(i)}+b)\geq\lambda$ and $||w||=1$.
     This can be equivalently achieved by the following (primal) optimization problem
     \begin{equation*}
         \min_{w,b} \frac{1}{2} ||w||^2 \qquad \text{s.t.} \quad y^{(i)}(w^T x^{(i)} + b) \geq 1, \quad i=1,\ldots,m
@@ -391,7 +392,7 @@
         \qquad i=1,\ldots,m
     \end{equation*}
     This allows functional margins less than 1, but increases the objective function by $C\xi_i$.
-    The parameter $C$ controls the weighing between making $||w||^2$ small and ensuring that most examples have a margin of at least 1.
+    The parameter $C$ controls the relative weighting between making $||w||^2$ small and ensuring that most examples have a functional margin of at least 1.
     The dual optimization problem is
     \begin{equation*}
         \max_{\alpha} \sum\limits_{i=1}^m \alpha_i - \frac{1}{2}\sum\limits_{i,j=1}^m y^{(i)} y^{(j)} \alpha_i \alpha_j \langle x^{(i)},x^{(j)} \rangle
@@ -408,7 +409,8 @@
         0 < \alpha_i < C & \quad\Rightarrow\quad y^{(i)}(w^T x^{(i)}+b) = 1 \qquad \text{training point is a support vector}\\
     \end{align*}
  	
- 	\skriptsubsection{Overview over Different Procedures}{260} 
+   \subsection{Overview over Different Procedures}
+   Table on p.260.
  	
  	\skriptsubsection{Multicategory Generalization}{265}
  	To handle \em multicategory cases \em with the \textbf{Kesler's Construction} the dimension of 
