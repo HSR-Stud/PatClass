@@ -18,7 +18,7 @@
     
   \skriptsubsection{Parzen Windows}{164}
   	The goal of the Parzen Windows method is to estimate a class-conditional probabilty density function $p(\bm x | \omega)$. 
-    For this a window function with a defined region $\mathcal{R}_n$ is convoluted with each training sample give class. 
+    For this a window function with a defined region $\mathcal{R}_n$ is convoluted with each training sample of a given class. 
     The sum of all functions gives the density function.\\
     The window function could be, for example, a $d$-dimensional hypercube with $h_n$ being the length of an edge or any other function 
     (Gauss, triangle (Dreieck), \ldots). 
@@ -40,7 +40,7 @@
     Choosing $h_n$ is important! If $h_n$ (which leads to $V_n$) is too large, the resolution of the
     estimate is too small; if $h_n$ is too small, the statistical variability is too high.
     
-    If we define $\delta_n(\bfx)$ to be $\delta_n(\bfx) = \frac{1}{V_n} \phi\left(\frac{\bfx}{h_n}\right)$,
+    If we define $\delta_n(\bfx)$ to be $\delta_n(\bfx) = \frac{1}{V_n} \varphi\left(\frac{\bfx}{h_n}\right)$,
     we can rewrite $p_n(\bfx)$ as the average of a number of dirac functions 
     \begin{equation*}
       p_n(\bfx) = \frac{1}{n}\sum\limits_{i=1}^{n}\delta_n(\bfx-\bfx_i)
@@ -76,7 +76,7 @@
     parallel.
     
   
-  \skriptsubsection{$k_n$-Nearest-Neighbor Estimation}{174}
+  \skriptsubsection{$k_n$-Nearest-Neighbor Estimation}{174}%TODO: continue
     \begin{tabular}{ll}
       \parbox{7cm}{
         \includegraphics[width=6cm]{./images/k-nearest-neighbor.jpg}
@@ -87,16 +87,16 @@
           
           Regarding the probability function $p_n(\bm{x}) = \frac{k_n/n}{V_n}$, $k_n$ and $n$
           and therefore $k_n/n$ are fixed and only the volume is adjusted. $k_n$ is now the degree 
-          of freedom and good value can be $k_n = \sqrt{n}$.
+          of freedom and a good value can be $k_n = \sqrt{n}$.
           
-          The figure shows the training samples on the $x$-axis and two possible probability
+          The figure shows the training samples on the $x$-axis and two possible probabilities
           with $k_n=3$ and $k_n=5$. The curve is continuous, but the first derivation (slope) is not. 
-          In comparision the $k_n$-Nearest-Neighbor to the Parzen-Window estimation the curve is spikier, especially when a Gaussian window is used 
+          The $k_n$-Nearest-Neighbor curve is spikier in comparison to the Parzen-Window estimation, especially when a Gaussian window is used 
           in the Parzen window method.
           }
     \end{tabular} 
     \vspace{3mm}\\
-    Instead of estimate the probability density and calculate the \textbf{a posteriori probabilities} $\bm {P(\omega_i | \bm x)}$ with Bayes, the a posteriori 
+    Instead of estimating the probability density and calculate the \textbf{a posteriori probabilities} $\bm {P(\omega_i | \bm x)}$ with Bayes, the a posteriori 
     probabilities can be directly calculated out of the training data:\\
     $$ P_n(\omega_i|\bm x)=\frac{k_i}{k}$$
     where $k_i$ is the number of training sample of class $\omega_i$ within a volume $V$ around $\bm x$.
@@ -105,10 +105,10 @@
   
   \skriptsubsection{Nearest-Neighbor Rule}{177}
   	The nearest-neighbor is a simplification of $k_n$-nearest-neighbors, in particular $k=1$. 
-  	The class the given test sample will be the same class as the ``next'' trainings sample.
-  	This can be visualized by a \emph{Voroni tesselation}\formelbuch{178}.
+  	The given test sample will be the same class as the ``next'' training sample.
+  	This can be visualized by a \emph{Voronoi tesselation}\formelbuch{178}.
   	
-  	\skriptsubsubsection{Convergence of the Nearest Neighbor}{181}
+  	\skriptsubsubsection{Convergence of the Nearest Neighbor}{179}
     The error rate of the nearest-neighbor rule is not optimal, it is usually worse than the Bayes 
     rate (minimum). However, it is never worse than twice the Bayes rate. 
     In the best case, if the a-posteriori probabilities of all classes are the same
@@ -133,18 +133,18 @@
     High complexity in space and time especially when having a lot of features (dimensionality)!
     Reduce by: 
     \begin{aufzaehlung}
-    	\item Use the square distance instead of the use the square route to compare: $D_r(a,b)=\sum\limits_{k=1}^r(a_k-b_k)^2$ 
-    	instead of  $D_r(a,b)=\left(\sum\limits_{k=1}^r(a_k-b_k)^2\right)^{1/2}$
+    	\item Use the squared distance instead of the square-root to compare: $D_r(\bm{a},\bm{b})=\sum\limits_{k=1}^r(a_k-b_k)^2$ 
+    	instead of  $D_r(\bm{a},\bm{b})=\left(\sum\limits_{k=1}^r(a_k-b_k)^2\right)^{1/2}$
     	\item Calculate partial distances during classification (abort calculating the distance if it 
     	is already higher than the $k$-nearest ones)
-    	\item Eliminate unused prototypes (pruning) by algorithm 3, p.186. This has the disadvanture that a new traning sample can't be easily added.
+    	\item Eliminate unused prototypes (pruning) by algorithm 3\formelbuch{186}. This has the disadvantage that a new training sample can't be easily added.
     	\item Form a search tree during training: Divide search field into subfields (e.g. 2D: 
     	1 search field leads to 4 quadrants). It's much faster, but does not necessarily yield to the best solution.
     \end{aufzaehlung}
   
   \skriptsubsection{Metrics}{187}
     A metric gives a generalized scalar distance between different arguments (vectors, functions, etc.). 
-    The metrics has  a big influence in the Nearest-Neighbor. \textbf{Scaling!!!}
+    The metrics have a big influence on the Nearest-Neighbor. \textbf{Scaling!!!}
     Usually all lengths are measured in terms of their standard deviation.
   
   \begin{multicols}{2}
@@ -176,10 +176,10 @@
 	The Tanimoto metric is used in taxonomy to define the distance between two sets.
 	$D_{\mathrm{Tanimoto}}(\mathcal{S}_1,\mathcal{S}_2) = \frac{n_1 + n_2 - 2 n_{12}}{n_1 + n_2 - n_{12}}$
 	where $n_1$ and $n_2$ are the number of elements in the sets $\mathcal{S}_1$ and $\mathcal{S}_2$ 
-	and $n_{12}$ is the number that is in both sets.
+	and $n_{12}$ is the number of elements that are in both sets.
     
     \subsubsection{Selection of a Metric}
-      Hard to choose, usually selection is dictated by computational concerns not to prior knowledge
+      Hard to choose, usually selection is dictated by computational concerns not by prior knowledge
       about the distributions.
       
     \skriptsubsubsection{Tangent distance}{188}
